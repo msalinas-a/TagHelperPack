@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using TagHelperPack;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -9,25 +9,22 @@ namespace Microsoft.Extensions.DependencyInjection;
 /// </summary>
 public static class TagHelperPackServiceCollectionExtensions
 {
-    /// <summary>
-    /// Add optional services to optimize TagHelperPack.
-    /// <list type="bullet">
-    ///   <item>Registers <see cref="ModelHtmlHelper"/> as <see cref="IHtmlHelper"/> and <see cref="IModelHtmlHelper"/>.</item>
-    /// </list>
-    /// </summary>
-    /// <param name="services">The <see cref="IServiceCollection"/>.</param>
-    /// <returns><paramref name="services"/></returns>
-    /// <exception cref="ArgumentNullException">Thrown if <paramref name="services"/> is <see langword="null"/>.</exception>
-    public static IServiceCollection AddTagHelperPack(this IServiceCollection services)
-    {
-        if (services == null)
-        {
-            throw new ArgumentNullException(nameof(services));
-        }
+	/// <summary>
+	/// Add optional services to optimize TagHelperPack.
+	/// <list type="bullet">
+	///   <item>Registers <see cref="ModelHtmlHelper"/> as <see cref="IHtmlHelper"/> and <see cref="IModelHtmlHelper"/>.</item>
+	/// </list>
+	/// </summary>
+	/// <param name="services">The <see cref="IServiceCollection"/>.</param>
+	/// <returns><paramref name="services"/></returns>
+	/// <exception cref="ArgumentNullException">Thrown if <paramref name="services"/> is <see langword="null"/>.</exception>
+	public static IServiceCollection AddTagHelperPack(this IServiceCollection services)
+	{
+		ArgumentNullException.ThrowIfNull(services);
 
-        services.AddTransient<IHtmlHelper, ModelHtmlHelper>();
-        services.AddTransient<IModelHtmlHelper, ModelHtmlHelper>();
+		services.AddTransient<IHtmlHelper, ModelHtmlHelper>();
+		services.AddTransient<IModelHtmlHelper, ModelHtmlHelper>();
 
-        return services;
-    }
+		return services;
+	}
 }

@@ -1,6 +1,6 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
+﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using System;
 
 namespace TagHelperPack;
 
@@ -10,34 +10,28 @@ namespace TagHelperPack;
 [HtmlTargetElement("label", Attributes = "asp-for")]
 public class LabelTitleTagHelper : TagHelper
 {
-    /// <summary>
-    /// Gets or sets an expression to be evaluated against the current model.
-    /// </summary>
-    [HtmlAttributeName("asp-for")]
-    public ModelExpression For { get; set; }
+	/// <summary>
+	/// Gets or sets an expression to be evaluated against the current model.
+	/// </summary>
+	[HtmlAttributeName("asp-for")]
+	public ModelExpression For { get; set; }
 
-    /// <inheritdoc />
-    public override void Process(TagHelperContext context, TagHelperOutput output)
-    {
-        if (context == null)
-        {
-            throw new ArgumentNullException(nameof(context));
-        }
+	/// <inheritdoc />
+	public override void Process(TagHelperContext context, TagHelperOutput output)
+	{
+		ArgumentNullException.ThrowIfNull(context);
 
-        if (output == null)
-        {
-            throw new ArgumentNullException(nameof(output));
-        }
+		ArgumentNullException.ThrowIfNull(output);
 
-        if (context.SuppressedByAspIf() || context.SuppressedByAspAuthz())
-        {
-            return;
-        }
+		if (context.SuppressedByAspIf() || context.SuppressedByAspAuthz())
+		{
+			return;
+		}
 
-        var description = For.Metadata.Description;
-        if (!string.IsNullOrEmpty(description) && !output.Attributes.ContainsName("title"))
-        {
-            output.Attributes.Add(new TagHelperAttribute("title", description));
-        }
-    }
+		var description = For.Metadata.Description;
+		if (!string.IsNullOrEmpty(description) && !output.Attributes.ContainsName("title"))
+		{
+			output.Attributes.Add(new TagHelperAttribute("title", description));
+		}
+	}
 }

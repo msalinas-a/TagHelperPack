@@ -1,7 +1,7 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using System;
 
 namespace TagHelperPack;
 
@@ -11,50 +11,44 @@ namespace TagHelperPack;
 [HtmlTargetElement("*", Attributes = "asp-display-name-for")]
 public class DisplayNameForTagHelper : TagHelper
 {
-    private readonly IHtmlHelper _htmlHelper;
+	private readonly IHtmlHelper _htmlHelper;
 
-    /// <summary>
-    /// Creates a new instance of the <see cref="DisplayNameForTagHelper" /> class.
-    /// </summary>
-    /// <param name="htmlHelper">The <see cref="IHtmlHelper"/>.</param>
-    public DisplayNameForTagHelper(IHtmlHelper htmlHelper)
-    {
-        _htmlHelper = htmlHelper;
-    }
+	/// <summary>
+	/// Creates a new instance of the <see cref="DisplayNameForTagHelper" /> class.
+	/// </summary>
+	/// <param name="htmlHelper">The <see cref="IHtmlHelper"/>.</param>
+	public DisplayNameForTagHelper(IHtmlHelper htmlHelper)
+	{
+		_htmlHelper = htmlHelper;
+	}
 
-    /// <summary>
-    /// An expression to be evaluated against the current model.
-    /// </summary>
-    [HtmlAttributeName("asp-display-name-for")]
-    public ModelExpression For { get; set; }
+	/// <summary>
+	/// An expression to be evaluated against the current model.
+	/// </summary>
+	[HtmlAttributeName("asp-display-name-for")]
+	public ModelExpression For { get; set; }
 
-    /// <summary>
-    /// Gets or sets the <see cref="ViewContext"/>.
-    /// </summary>
-    [HtmlAttributeNotBound]
-    [ViewContext]
-    public ViewContext ViewContext { get; set; }
+	/// <summary>
+	/// Gets or sets the <see cref="ViewContext"/>.
+	/// </summary>
+	[HtmlAttributeNotBound]
+	[ViewContext]
+	public ViewContext ViewContext { get; set; }
 
-    /// <inheritdoc />
-    public override void Process(TagHelperContext context, TagHelperOutput output)
-    {
-        if (context == null)
-        {
-            throw new ArgumentNullException(nameof(context));
-        }
+	/// <inheritdoc />
+	public override void Process(TagHelperContext context, TagHelperOutput output)
+	{
+		ArgumentNullException.ThrowIfNull(context);
 
-        if (output == null)
-        {
-            throw new ArgumentNullException(nameof(output));
-        }
+		ArgumentNullException.ThrowIfNull(output);
 
-        if (context.SuppressedByAspIf() || context.SuppressedByAspAuthz())
-        {
-            return;
-        }
+		if (context.SuppressedByAspIf() || context.SuppressedByAspAuthz())
+		{
+			return;
+		}
 
-        ((IViewContextAware)_htmlHelper).Contextualize(ViewContext);
+		((IViewContextAware)_htmlHelper).Contextualize(ViewContext);
 
-        output.PostContent.AppendHtml(_htmlHelper.DisplayName(For));
-    }
+		output.PostContent.AppendHtml(_htmlHelper.DisplayName(For));
+	}
 }

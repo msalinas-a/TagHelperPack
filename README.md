@@ -6,7 +6,7 @@ A set of useful, and possibly opinionated, Tag Helpers for ASP.NET Core (all ver
 
 See the examples page at https://taghelperpack.net
 
-Supports ASP.NET Core 6.0.x and 7.0.x. Also supports ASP.NET Core 2.1.x when running on .NET Framework 4.7.1 or higher.
+Supports ASP.NET Core 8.0.x.
 
 ## Installing
 
@@ -28,7 +28,7 @@ Supports ASP.NET Core 6.0.x and 7.0.x. Also supports ASP.NET Core 2.1.x when run
    @addTagHelper *, TagHelperPack
     ```
 
-1. Optional: Register optimizations in `ConfigureServices()` or `Program.cs` (ASP.NET Core 6+)
+1. Optional: Register optimizations in `Program.cs`
 
     ```csharp
     services.AddTagHelperPack();

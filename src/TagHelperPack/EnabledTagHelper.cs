@@ -16,25 +16,25 @@ namespace TagHelperPack;
 [HtmlTargetElement("input", Attributes = "[asp-enabled]")]
 public class EnabledTagHelper : TagHelper
 {
-    /// <summary>
-    /// Enable this element when the condition is <c>true</c>. Defaults to <c>true</c>.
-    /// If <c>false</c>, will add <c>disabled="disabled"</c> attribute to the element.
-    /// </summary>
-    [HtmlAttributeName("asp-enabled")]
-    public bool IsEnabled { get; set; } = true;
+	/// <summary>
+	/// Enable this element when the condition is <c>true</c>. Defaults to <c>true</c>.
+	/// If <c>false</c>, will add <c>disabled="disabled"</c> attribute to the element.
+	/// </summary>
+	[HtmlAttributeName("asp-enabled")]
+	public bool IsEnabled { get; set; } = true;
 
-    /// <inheritdoc />
-    public override void Process(TagHelperContext context, TagHelperOutput output)
-    {
-        if (context.SuppressedByAspIf() || context.SuppressedByAspAuthz())
-        {
-            return;
-        }
+	/// <inheritdoc />
+	public override void Process(TagHelperContext context, TagHelperOutput output)
+	{
+		if (context.SuppressedByAspIf() || context.SuppressedByAspAuthz())
+		{
+			return;
+		}
 
-        // If it's not enabled, append disabled attribute
-        if (!IsEnabled)
-        {
-            output.Attributes.SetAttribute("disabled", "disabled");
-        }
-    }
+		// If it's not enabled, append disabled attribute
+		if (!IsEnabled)
+		{
+			output.Attributes.SetAttribute("disabled", "disabled");
+		}
+	}
 }
