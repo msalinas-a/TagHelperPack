@@ -12,25 +12,20 @@ namespace TagHelperPack;
 /// <summary>
 ///
 /// </summary>
+/// <remarks>
+/// Creates a new <see cref="RenderPartialTagHelper"/>.
+/// </remarks>
+/// <param name="viewEngine">The <see cref="ICompositeViewEngine"/> used to locate the partial view.</param>
+/// <param name="viewBufferScope">The <see cref="IViewBufferScope"/>.</param>
 [HtmlTargetElement("render-partial")]
-public class RenderPartialTagHelper : TagHelper
+public class RenderPartialTagHelper(ICompositeViewEngine viewEngine, IViewBufferScope viewBufferScope) : TagHelper
 {
 	private const string ForAttributeName = "for";
 	private const string ModelAttributeName = "model";
 	private const string FallbackAttributeName = "fallback-name";
 	private const string OptionalAttributeName = "optional";
 
-	private readonly PartialTagHelper _partialTagHelper;
-
-	/// <summary>
-	/// Creates a new <see cref="RenderPartialTagHelper"/>.
-	/// </summary>
-	/// <param name="viewEngine">The <see cref="ICompositeViewEngine"/> used to locate the partial view.</param>
-	/// <param name="viewBufferScope">The <see cref="IViewBufferScope"/>.</param>
-	public RenderPartialTagHelper(ICompositeViewEngine viewEngine, IViewBufferScope viewBufferScope)
-	{
-		_partialTagHelper = new(viewEngine, viewBufferScope);
-	}
+	private readonly PartialTagHelper _partialTagHelper = new(viewEngine, viewBufferScope);
 
 	/// <inheritdoc />
 	public override int Order => int.MaxValue; // Must run later than the IfTagHelper so that it can read the value it set.

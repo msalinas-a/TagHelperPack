@@ -13,19 +13,14 @@ namespace TagHelperPack;
 /// <summary>
 /// Allows inlining the content of the referenced JavaScript file into the element body.
 /// </summary>
+/// <remarks>
+/// Creates a new instance of the <see cref="ScriptInliningTagHelper"/> class.
+/// </remarks>
+/// <param name="env">The <see cref="IWebHostEnvironment" />.</param>
 [HtmlTargetElement("script", Attributes = "asp-inline")]
-public class ScriptInliningTagHelper : TagHelper
+public class ScriptInliningTagHelper(IWebHostEnvironment env) : TagHelper
 {
-	private readonly IFileProvider _wwwroot;
-
-	/// <summary>
-	/// Creates a new instance of the <see cref="ScriptInliningTagHelper"/> class.
-	/// </summary>
-	/// <param name="env">The <see cref="IWebHostEnvironment" />.</param>
-	public ScriptInliningTagHelper(IWebHostEnvironment env)
-	{
-		_wwwroot = env.WebRootFileProvider;
-	}
+	private readonly IFileProvider _wwwroot = env.WebRootFileProvider;
 
 	/// <summary>
 	/// Specifies whether the script file should be inlined.

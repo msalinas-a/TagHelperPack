@@ -1,17 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0</TargetFrameworks>
+		<TargetFrameworks>net10.0</TargetFrameworks>
 		<Description>A set of useful, and possibly opinionated, Tag Helpers for ASP.NET Core.</Description>
 		<PackageTags>aspnetcore taghelpers razor cshtml</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<LangVersion>10.0</LangVersion>
 		<NoWarn>NU5105</NoWarn>
 		<OutputType>Library</OutputType>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<None Include="../../README.md" Pack="true" PackagePath="\" />
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.202" PrivateAssets="All" />
 	</ItemGroup>
 </Project>

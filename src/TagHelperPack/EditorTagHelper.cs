@@ -9,23 +9,15 @@ namespace TagHelperPack;
 /// <summary>
 /// Renders the HTML markup from an editor template for the specified model expression.
 /// </summary>
+/// <remarks>
+/// Creates a new instance of the <see cref="EditorTagHelper" /> class.
+/// </remarks>
+/// <param name="htmlHelper">The <see cref="IHtmlHelper"/>.</param>
 [HtmlTargetElement("editor", Attributes = "for", TagStructure = TagStructure.WithoutEndTag)]
-public class EditorTagHelper : TagHelper
+public class EditorTagHelper(IHtmlHelper htmlHelper) : TagHelper
 {
 	private const string ViewDataDictionaryName = "view-data";
 	private const string ViewDataPrefix = "view-data-";
-
-	private readonly IHtmlHelper _htmlHelper;
-	private IDictionary<string, object> _viewData;
-
-	/// <summary>
-	/// Creates a new instance of the <see cref="EditorTagHelper" /> class.
-	/// </summary>
-	/// <param name="htmlHelper">The <see cref="IHtmlHelper"/>.</param>
-	public EditorTagHelper(IHtmlHelper htmlHelper)
-	{
-		_htmlHelper = htmlHelper;
-	}
 
 	/// <summary>
 	/// An expression to be evaluated against the current model.
@@ -51,8 +43,8 @@ public class EditorTagHelper : TagHelper
 	[HtmlAttributeName(ViewDataDictionaryName, DictionaryAttributePrefix = ViewDataPrefix)]
 	public IDictionary<string, object> ViewData
 	{
-		get => _viewData ??= new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-		set => _viewData = value;
+		get => field ??= new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+		set;
 	}
 
 	/// <summary>
@@ -74,9 +66,9 @@ public class EditorTagHelper : TagHelper
 			return;
 		}
 
-		((IViewContextAware)_htmlHelper).Contextualize(ViewContext);
+		((IViewContextAware)htmlHelper).Contextualize(ViewContext);
 
-		output.Content.SetHtmlContent(_htmlHelper.Editor(For, HtmlFieldName, TemplateName, ViewData));
+		output.Content.SetHtmlContent(htmlHelper.Editor(For, HtmlFieldName, TemplateName, ViewData));
 
 		output.TagName = null;
 	}

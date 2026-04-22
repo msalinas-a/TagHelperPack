@@ -8,19 +8,13 @@ namespace TagHelperPack;
 /// <summary>
 /// Appends the display name for the specified model expression.
 /// </summary>
+/// <remarks>
+/// Creates a new instance of the <see cref="DisplayNameForTagHelper" /> class.
+/// </remarks>
+/// <param name="htmlHelper">The <see cref="IHtmlHelper"/>.</param>
 [HtmlTargetElement("*", Attributes = "asp-display-name-for")]
-public class DisplayNameForTagHelper : TagHelper
+public class DisplayNameForTagHelper(IHtmlHelper htmlHelper) : TagHelper
 {
-	private readonly IHtmlHelper _htmlHelper;
-
-	/// <summary>
-	/// Creates a new instance of the <see cref="DisplayNameForTagHelper" /> class.
-	/// </summary>
-	/// <param name="htmlHelper">The <see cref="IHtmlHelper"/>.</param>
-	public DisplayNameForTagHelper(IHtmlHelper htmlHelper)
-	{
-		_htmlHelper = htmlHelper;
-	}
 
 	/// <summary>
 	/// An expression to be evaluated against the current model.
@@ -47,8 +41,8 @@ public class DisplayNameForTagHelper : TagHelper
 			return;
 		}
 
-		((IViewContextAware)_htmlHelper).Contextualize(ViewContext);
+		((IViewContextAware)htmlHelper).Contextualize(ViewContext);
 
-		output.PostContent.AppendHtml(_htmlHelper.DisplayName(For));
+		output.PostContent.AppendHtml(htmlHelper.DisplayName(For));
 	}
 }

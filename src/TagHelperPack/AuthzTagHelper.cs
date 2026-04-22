@@ -10,26 +10,19 @@ namespace TagHelperPack;
 /// <summary>
 /// Suppresses rendering of an element unless specific authorization policies are met.
 /// </summary>
+/// <remarks>
+/// Creates a new instance of the <see cref="AuthzTagHelper" /> class.
+/// </remarks>
+/// <param name="authz">The <see cref="IAuthorizationService"/>.</param>
 [HtmlTargetElement("*", Attributes = AspAuthzAttributeName)]
 [HtmlTargetElement("*", Attributes = AspAuthzPolicyAttributeName)]
-public class AuthzTagHelper : TagHelper
+public class AuthzTagHelper(IAuthorizationService authz) : TagHelper
 {
 	internal static object SuppressedKey = new();
 	internal static object SuppressedValue = new();
 
 	private const string AspAuthzAttributeName = "asp-authz";
 	private const string AspAuthzPolicyAttributeName = "asp-authz-policy";
-
-	private readonly IAuthorizationService _authz;
-
-	/// <summary>
-	/// Creates a new instance of the <see cref="AuthzTagHelper" /> class.
-	/// </summary>
-	/// <param name="authz">The <see cref="IAuthorizationService"/>.</param>
-	public AuthzTagHelper(IAuthorizationService authz)
-	{
-		_authz = authz;
-	}
 
 	/// <inheritdoc />
 	// Run before other Tag Helpers (default Order is 0) so they can cooperatively decide not to run.
@@ -89,7 +82,7 @@ public class AuthzTagHelper : TagHelper
 			}
 			else
 			{
-				var authResult = await _authz.AuthorizeAsync(user, ViewContext, RequiredPolicy);
+				var authResult = await authz.AuthorizeAsync(user, ViewContext, RequiredPolicy);
 				authorized = authResult.Succeeded;
 				ViewContext.ViewData[cacheKey] = authorized;
 			}

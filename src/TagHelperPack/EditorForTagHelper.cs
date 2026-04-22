@@ -9,23 +9,15 @@ namespace TagHelperPack;
 /// <summary>
 /// Appends the HTML markup from an editor template for the specified model expression.
 /// </summary>
+/// <remarks>
+/// Creates a new instance of the <see cref="EditorForTagHelper" /> class.
+/// </remarks>
+/// <param name="htmlHelper">The <see cref="IHtmlHelper"/>.</param>
 [HtmlTargetElement("*", Attributes = "asp-editor-for")]
-public class EditorForTagHelper : TagHelper
+public class EditorForTagHelper(IHtmlHelper htmlHelper) : TagHelper
 {
 	private const string ViewDataDictionaryName = "asp-view-data";
 	private const string ViewDataPrefix = "asp-view-data-";
-
-	private readonly IHtmlHelper _htmlHelper;
-	private IDictionary<string, object> _viewData;
-
-	/// <summary>
-	/// Creates a new instance of the <see cref="EditorForTagHelper" /> class.
-	/// </summary>
-	/// <param name="htmlHelper">The <see cref="IHtmlHelper"/>.</param>
-	public EditorForTagHelper(IHtmlHelper htmlHelper)
-	{
-		_htmlHelper = htmlHelper;
-	}
 
 	/// <summary>
 	/// An expression to be evaluated against the current model.
@@ -51,8 +43,8 @@ public class EditorForTagHelper : TagHelper
 	[HtmlAttributeName(ViewDataDictionaryName, DictionaryAttributePrefix = ViewDataPrefix)]
 	public IDictionary<string, object> ViewData
 	{
-		get => _viewData ??= new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-		set => _viewData = value;
+		get => field ??= new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+		set;
 	}
 
 	/// <summary>
@@ -74,8 +66,8 @@ public class EditorForTagHelper : TagHelper
 			return;
 		}
 
-		((IViewContextAware)_htmlHelper).Contextualize(ViewContext);
+		((IViewContextAware)htmlHelper).Contextualize(ViewContext);
 
-		output.PostContent.AppendHtml(_htmlHelper.Editor(For, HtmlFieldName, TemplateName, ViewData));
+		output.PostContent.AppendHtml(htmlHelper.Editor(For, HtmlFieldName, TemplateName, ViewData));
 	}
 }

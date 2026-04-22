@@ -8,19 +8,13 @@ namespace TagHelperPack;
 /// <summary>
 /// Renders the display name for the specified model expression.
 /// </summary>
+/// <remarks>
+/// Creates a new instance of the <see cref="DisplayNameTagHelper" /> class.
+/// </remarks>
+/// <param name="htmlHelper">The <see cref="IHtmlHelper"/>.</param>
 [HtmlTargetElement("display-name", Attributes = "for", TagStructure = TagStructure.WithoutEndTag)]
-public class DisplayNameTagHelper : TagHelper
+public class DisplayNameTagHelper(IHtmlHelper htmlHelper) : TagHelper
 {
-	private readonly IHtmlHelper _htmlHelper;
-
-	/// <summary>
-	/// Creates a new instance of the <see cref="DisplayNameTagHelper" /> class.
-	/// </summary>
-	/// <param name="htmlHelper">The <see cref="IHtmlHelper"/>.</param>
-	public DisplayNameTagHelper(IHtmlHelper htmlHelper)
-	{
-		_htmlHelper = htmlHelper;
-	}
 
 	/// <summary>
 	/// An expression to be evaluated against the current model.
@@ -47,9 +41,9 @@ public class DisplayNameTagHelper : TagHelper
 			return;
 		}
 
-		((IViewContextAware)_htmlHelper).Contextualize(ViewContext);
+		((IViewContextAware)htmlHelper).Contextualize(ViewContext);
 
-		output.PostContent.AppendHtml(_htmlHelper.DisplayName(For));
+		output.PostContent.AppendHtml(htmlHelper.DisplayName(For));
 
 		output.TagName = null;
 	}

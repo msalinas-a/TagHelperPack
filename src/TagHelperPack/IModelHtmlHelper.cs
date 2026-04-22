@@ -26,16 +26,12 @@ public interface IModelHtmlHelper : IHtmlHelper
 /// <summary>
 /// An <see cref="HtmlHelper"/> that implements <see cref="IModelHtmlHelper"/>.
 /// </summary>
-internal class ModelHtmlHelper : HtmlHelper, IModelHtmlHelper
+/// <remarks>
+/// Initializes a new instance of the <see cref="ModelHtmlHelper"/> class.
+/// </remarks>
+/// <inheritdoc cref="HtmlHelper.HtmlHelper(IHtmlGenerator, ICompositeViewEngine, IModelMetadataProvider, IViewBufferScope, HtmlEncoder, UrlEncoder)"/>
+internal class ModelHtmlHelper(IHtmlGenerator htmlGenerator, ICompositeViewEngine viewEngine, IModelMetadataProvider metadataProvider, IViewBufferScope bufferScope, HtmlEncoder htmlEncoder, UrlEncoder urlEncoder) : HtmlHelper(htmlGenerator, viewEngine, metadataProvider, bufferScope, htmlEncoder, urlEncoder), IModelHtmlHelper
 {
-	/// <summary>
-	/// Initializes a new instance of the <see cref="ModelHtmlHelper"/> class.
-	/// </summary>
-	/// <inheritdoc cref="HtmlHelper.HtmlHelper(IHtmlGenerator, ICompositeViewEngine, IModelMetadataProvider, IViewBufferScope, HtmlEncoder, UrlEncoder)"/>
-	public ModelHtmlHelper(IHtmlGenerator htmlGenerator, ICompositeViewEngine viewEngine, IModelMetadataProvider metadataProvider, IViewBufferScope bufferScope, HtmlEncoder htmlEncoder, UrlEncoder urlEncoder)
-		: base(htmlGenerator, viewEngine, metadataProvider, bufferScope, htmlEncoder, urlEncoder)
-	{
-	}
 
 	/// <inheritdoc cref="HtmlHelper.GenerateDisplay(ModelExplorer, string, string, object)"/>
 	public new IHtmlContent GenerateDisplay(ModelExplorer modelExplorer, string htmlFieldName, string templateName, object additionalViewData)
